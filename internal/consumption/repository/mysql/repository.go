@@ -20,7 +20,12 @@ func New(db *gorm.DB) *ConsumptionRepository {
 func (r *ConsumptionRepository) GetConsumptionByMeterIDAndDateRange(meterID int, start, end time.Time) ([]model.Consumption, error) {
 	var data []model.Consumption
 
-	err := r.DB.Where("meter_id = ? AND date BETWEEN ? AND ?", meterID, start, end).Order("date ASC").Find(&data).Error
+	r.DB.LogMode(true)
+
+	err := r.DB.Where("meter_id = ? AND date BETWEEN ? AND ?", meterID, start, end).
+		Unscoped().
+		Order("date ASC").
+		Find(&data).Error
 
 	return data, err
 }

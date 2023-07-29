@@ -1,7 +1,6 @@
 package repository_test
 
 import (
-	"regexp"
 	"testing"
 	"time"
 
@@ -23,11 +22,11 @@ func TestGetConsumptionByMeterIDAndDateRange(t *testing.T) {
 	start := time.Now()
 	end := start.Add(24 * time.Hour)
 
-	rows := sqlmock.NewRows([]string{"id", "meter_id", "active_energy", "reactive_energy", "capacitive_reactive", "solar", "date"}).
+	rows := sqlmock.NewRows([]string{"ID", "METER_ID", "ACTIVE_ENERGY", "REACTIVE_ENERGY", "CAPACITIVE_REACTIVE", "SOLAR", "DATE"}).
 		AddRow("1", 1, 1.0, 1.0, 1.0, 1.0, start).
 		AddRow("2", 1, 2.0, 2.0, 2.0, 2.0, end)
 
-	query := "^SELECT \\* FROM " + regexp.QuoteMeta("`energy`") + " WHERE " + regexp.QuoteMeta("`energy`.`deleted_at` IS NULL AND ((meter_id = ? AND date BETWEEN ? AND ?))") + " ORDER BY date ASC$"
+	query := "^SELECT \\* FROM  \\`ENERGY\\` WHERE \\(meter_id = \\? AND date BETWEEN \\? AND \\?\\) ORDER BY date ASC"
 
 	mock.ExpectQuery(query).
 		WithArgs(1, start, end).
@@ -41,7 +40,7 @@ func TestGetConsumptionByMeterIDAndDateRange(t *testing.T) {
 	// Assert
 	assert.Nil(t, err)
 	assert.Equal(t, 2, len(data))
-
+	assert.Equal(t, "1", data[0].ID)
 	assert.Equal(t, 1, data[0].MeterID)
 	assert.Equal(t, 1.0, data[0].ActiveEnergy)
 	assert.Equal(t, 1.0, data[0].ReactiveEnergy)
@@ -49,6 +48,7 @@ func TestGetConsumptionByMeterIDAndDateRange(t *testing.T) {
 	assert.Equal(t, 1.0, data[0].Solar)
 	assert.Equal(t, start, data[0].Date)
 
+	assert.Equal(t, "2", data[1].ID)
 	assert.Equal(t, 1, data[1].MeterID)
 	assert.Equal(t, 2.0, data[1].ActiveEnergy)
 	assert.Equal(t, 2.0, data[1].ReactiveEnergy)
