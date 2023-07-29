@@ -3,7 +3,7 @@ package repository
 import (
 	"time"
 
-	consumption "github.com/energy/internal/consumption/model"
+	"github.com/energy/internal/consumption/model"
 	"github.com/jinzhu/gorm"
 )
 
@@ -17,8 +17,8 @@ func New(db *gorm.DB) *ConsumptionRepository {
 	}
 }
 
-func (r *ConsumptionRepository) GetConsumptionByMeterIDAndDateRange(meterID int, start, end time.Time) ([]consumption.Consumption, error) {
-	var data []consumption.Consumption
+func (r *ConsumptionRepository) GetConsumptionByMeterIDAndDateRange(meterID int, start, end time.Time) ([]model.Consumption, error) {
+	var data []model.Consumption
 
 	err := r.DB.Where("meter_id = ? AND date BETWEEN ? AND ?", meterID, start, end).Order("date ASC").Find(&data).Error
 

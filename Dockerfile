@@ -12,6 +12,7 @@ RUN echo '[mysqld]\nlocal-infile = 1' > /etc/mysql/conf.d/local-infile.cnf
 
 # Copia el archivo de migración y CSV a la carpeta docker-entrypoint-initdb.d en el contenedor
 COPY ./database/migration.sql /docker-entrypoint-initdb.d/migration.sql
+COPY ./database/load_data.sql /docker-entrypoint-initdb.d/load_data.sql
 COPY ./database/test_bia.csv /docker-entrypoint-initdb.d/test_bia.csv
 
 EXPOSE 3306

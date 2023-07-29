@@ -1,4 +1,4 @@
-package consumption
+package model
 
 import (
 	"time"

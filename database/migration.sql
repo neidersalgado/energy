@@ -1,9 +1,11 @@
-CREATE TABLE IF NOT EXISTS energy (
-    id VARCHAR(36),
-    meter_id INT,
-    active_energy DOUBLE,
-    reactive_energy DOUBLE,
-    capacitive_reactive DOUBLE,
-    solar DOUBLE,
-    date DATETIME
-    );
+DROP TABLE IF EXISTS ENERGY;
+
+CREATE TABLE IF NOT EXISTS ENERGY (
+    ID VARCHAR(36),
+    METER_ID INT,
+    ACTIVE_ENERGY DOUBLE,
+    REACTIVE_ENERGY DOUBLE,
+    CAPACITIVE_REACTIVE DOUBLE,
+    SOLAR DOUBLE,
+    DATE TIMESTAMP
+);
