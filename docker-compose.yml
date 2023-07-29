@@ -1,0 +1,11 @@
+version: '3.1'
+
+services:
+  db:
+    build: .
+    ports:
+      - 3406:3306
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d
+    command: --local-infile=1
+    restart: always
