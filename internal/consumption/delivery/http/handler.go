@@ -2,6 +2,7 @@ package http
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -9,7 +10,6 @@ import (
 	repository "github.com/energy/internal/consumption/repository/mysql"
 	"github.com/energy/internal/consumption/service"
 	strategy "github.com/energy/internal/consumption/service/strategy"
-	"github.com/gorilla/mux"
 )
 
 type Handler struct {
@@ -17,20 +17,17 @@ type Handler struct {
 	repo    *repository.ConsumptionRepository
 }
 
-func NewHandler(service service.ConsumptionService, repository repository.ConsumptionRepository) *Handler {
+func NewHandler(repository *repository.ConsumptionRepository) *Handler {
 	return &Handler{
-		service: service,
-		repo:    &repository,
+		repo: repository,
 	}
 }
 
 func (h *Handler) GetConsumptionData(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	meterID, err := strconv.Atoi(params["meter_id"])
-	if err != nil {
-		http.Error(w, "Failed cas meterID", http.StatusBadRequest)
-		return
-	}
+	meterID := r.URL.Query().Get("meters_ids")
+	id, _ := strconv.Atoi(meterID)
+	fmt.Printf(" param %v", id)
+
 	startDateStr := r.URL.Query().Get("start_date")
 	endDateStr := r.URL.Query().Get("end_date")
 	kindPeriod := r.URL.Query().Get("kind_period")
@@ -52,7 +49,7 @@ func (h *Handler) GetConsumptionData(w http.ResponseWriter, r *http.Request) {
 
 	h.service = *service.NewConsumptionService(retriever)
 
-	data, err := h.service.GetConsumptionData(meterID, startDate, endDate)
+	data, err := h.service.GetConsumptionData(id, startDate, endDate)
 	if err != nil {
 		http.Error(w, "Failed to get consumption data", http.StatusInternalServerError)
 		return
