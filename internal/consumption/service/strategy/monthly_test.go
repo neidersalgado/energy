@@ -1,7 +1,6 @@
 package service_test
 
 import (
-	"fmt"
 	"testing"
 	"time"
 
@@ -19,7 +18,6 @@ func TestMonthlyDataRetriever_GetConsumption(t *testing.T) {
 	srv := service.NewMonthlyDataRetriever(repoMock)
 
 	data, err := srv.GetConsumption(1, start, end)
-	fmt.Printf("***** DATA month******* \n %+v", data)
 	assert.Nil(t, err)
 	assert.NotNil(t, data)
 	repoMock.AssertExpectations(t)

@@ -37,11 +37,11 @@ func (h *Handler) GetConsumptionData(w http.ResponseWriter, r *http.Request) {
 	var retriever service.ConsumptionRetriever
 	switch kindPeriod {
 	case "monthly":
-		retriever = strategy.NewMonthlyDataRetriever(h.repo) // Pasar h.repo en lugar de &h.repo
+		retriever = strategy.NewMonthlyDataRetriever(h.repo)
 	case "weekly":
-		retriever = strategy.NewWeeklyDataRetriever(h.repo) // Pasar h.repo en lugar de &h.repo
+		retriever = strategy.NewWeeklyDataRetriever(h.repo)
 	case "daily":
-		retriever = strategy.NewDailyDataRetriever(h.repo) // Pasar h.repo en lugar de &h.repo
+		retriever = strategy.NewDailyDataRetriever(h.repo)
 	default:
 		http.Error(w, "Invalid kind_period", http.StatusBadRequest)
 		return

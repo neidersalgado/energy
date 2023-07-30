@@ -11,3 +11,6 @@ migrate:
 
 load-data:
 	docker-compose exec db sh -c 'mysql --local-infile=1 -uroot -proot energy < /docker-entrypoint-initdb.d/load_data.sql'
+
+make start:
+	go run main.go
